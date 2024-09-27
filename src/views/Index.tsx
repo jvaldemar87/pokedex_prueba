@@ -5,12 +5,13 @@ import PokeCard from '../components/PokeCard';
 import { getAllPokemons, getPokemons } from '../services/pokemonService';
 
 const Index: React.FC = () => {
-  const [pokeList, setPokeList] = useState([]);
-  const [allPokemons, setAllPokemons] = useState([]);
-  const [pokeFilter, setPokeFilter] = useState('');
-  const [offset, setOffset] = useState(0);
-  const [limit] = useState(20);
-  const [pagTotal, setPagTotal] = useState(0);
+  const [pokeList, setPokeList] = useState<{ name: string, url: string }[]>([]); // pokeList será una lista de objetos con "name" y "url"
+  const [allPokemons, setAllPokemons] = useState<{ name: string, url: string }[]>([]); // allPokemons también será una lista de objetos similares
+  const [pokeFilter, setPokeFilter] = useState<string>(''); // pokeFilter será una cadena de texto para la búsqueda
+  const [offset, setOffset] = useState<number>(0); // offset será un número para el control de la paginación
+  const [limit] = useState<number>(20); // limit es un número que siempre será 20
+  const [pagTotal, setPagTotal] = useState<number>(0); // pagTotal será un número para el total de páginas
+
 
   useEffect(() => {
     fetchInitialData();

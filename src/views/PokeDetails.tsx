@@ -5,8 +5,8 @@ import { getPokemonDetails, getPokemonSpecies } from '../services/pokemonService
 
 const PokeDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [pokemon, setPokemon] = useState<any>(null);
-  const [pokeSpecies, setPokeSpecies] = useState<any>(null);
+  const [pokemon, setPokemon] = useState<unknown>(null); // Cambiado a 'unknown' para seguridad
+  const [pokeSpecies, setPokeSpecies] = useState<unknown>(null); // Cambiado a 'unknown'
   const [pokeDescription, setPokeDescription] = useState<string>('');
   const [pokeHabitat, setPokeHabitat] = useState<string>('');
   const [pokeStatics, setPokeStatics] = useState<{ name: string; value: number }[]>([]);

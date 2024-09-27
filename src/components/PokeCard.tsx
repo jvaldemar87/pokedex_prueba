@@ -2,18 +2,10 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Card, CardBody, CardFooter, CardImg, Col } from 'reactstrap';
-
-// Define las props que PokeCard espera recibir
-interface PokeCardProps {
-  poke: {
-    name: string;
-    url: string;
-  };
-}
+import { PokeCardProps, Pokemon } from '../interfaces/PokeTypes'; // Importamos las interfaces desde 'types.ts'
 
 const PokeCard: React.FC<PokeCardProps> = ({ poke }) => {
-  // Define el tipo de datos que el estado 'pokemon' manejará
-  const [pokemon, setPokemon] = useState<any>(null); 
+  const [pokemon, setPokemon] = useState<unknown>(null); // Cambiamos a 'unknown' para seguridad
   const [loading, setLoading] = useState<boolean>(true); 
 
   useEffect(() => {
@@ -24,11 +16,16 @@ const PokeCard: React.FC<PokeCardProps> = ({ poke }) => {
     try {
       const response = await axios.get(poke.url);
       setPokemon(response.data);
-      setLoading(false); 
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching Pokemon:", error);
-      setLoading(false); 
+      setLoading(false);
     }
+  };
+
+  // Función para verificar si el objeto es un Pokémon válido
+  const isPokemon = (data: unknown): data is Pokemon => {
+    return typeof data === 'object' && data !== null && 'id' in data && 'name' in data && 'sprites' in data;
   };
 
   if (loading) {
@@ -41,7 +38,8 @@ const PokeCard: React.FC<PokeCardProps> = ({ poke }) => {
     );
   }
 
-  if (!pokemon) {
+  // Verificamos que el objeto pokemon tenga la estructura que esperamos
+  if (!pokemon || !isPokemon(pokemon)) {
     return null; 
   }
 
@@ -49,7 +47,7 @@ const PokeCard: React.FC<PokeCardProps> = ({ poke }) => {
     <Col sm="4" lg="3" className="mb-3">
       <Card className="shadow border-4 border-warning">
         <CardImg
-          src={pokemon.sprites?.front_default} 
+          src={pokemon.sprites.front_default} 
           height="250"
           className="p-2"
           alt={pokemon.name}
